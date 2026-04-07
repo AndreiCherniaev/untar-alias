@@ -40,10 +40,7 @@ untar() {
     local absolute_path="$1" #path to archive
     local filename=$(basename "$absolute_path")
     local filename_no_extension="${filename%.*.*}"
-    if [ -z "$2" ]; then
-    echo "The second argument is empty or missing."
-    fi
-    local dir="${2:-$filename_no_extension}"
+    [[ -z "$2" ]] && local dir="${2:-$filename_no_extension}" || local dir="$2"
     # echo "unarchive $filename to $dir"
     case "$filename" in
         *.tar.gz) mkdir -p "$dir" && tar -x --use-compress-program=rapidgzip -f "$filename" --directory "$dir"
@@ -51,5 +48,5 @@ untar() {
 }
 EOF
 ```
-ToDo: 1) add ability to change base directory. For example I want untar from remote storage to local folder...
+ToDo:
 2) Switch logic based on tar format (bz2, gz, ...) like in https://gist.github.com/y0z/8b0337a0d8ba595d2b51bf883562f88b
