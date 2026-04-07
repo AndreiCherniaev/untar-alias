@@ -45,8 +45,18 @@ untar() {
     case "$filename" in
         *.tar.gz) mkdir -p "$dir" && tar -x --use-compress-program=rapidgzip -f "$filename" --directory "$dir"
     esac
+    if [ -n "$3" ]; then
+        local arg3="$3"
+        if [ "$arg3" = "-sdel" ]; then
+            gio trash "$filename" && echo "$filename trashed"
+        fi
+    fi
 }
 EOF
+```
+How to use? Example
+```
+untar archive.tar.gz myfolder222 -sdel
 ```
 ToDo:
 2) Switch logic based on tar format (bz2, gz, ...) like in https://gist.github.com/y0z/8b0337a0d8ba595d2b51bf883562f88b
