@@ -6,21 +6,9 @@ python3 -m pip install --user rapidgzip --break-system-packages
 ```
 
 Unfortunately pip install to some path which is not in PATH. So Ubuntu not find your application, let's add pip's folder to PATH
-Ubuntu 24 and older
 ```
-export myName=$USER && sudo -E bash -c 'cat <<EOF > /etc/profile.d/local_bin_to_PATH.sh
-# Unfochently pip install to some path which is not in PATH. So Ubuntu not find your application. 
-# Note, \$ means that I want use string "$PATH", if I well be use just
-#  export PATH="$PATH:/home/$myName/.local/bin"
-# then in file will be not good, like this (where q is example of corrent user name)
-#  export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/home/q/.local/bin"
-export PATH="\$PATH:/home/$myName/.local/bin"
-EOF'
-```
-Ubuntu 25.10 and upper
-```
-sudo bash -c 'cat <<EOF > /etc/profile.d/local_bin_to_PATH.sh
-# Unfochently pip install to some path which is not in PATH. So Ubuntu not find your application. 
+sudo bash -c 'cat <<EOF > "/etc/profile.d/local_bin_to_PATH.sh"
+# Unfortunately pip install to some path which is not in PATH. So Ubuntu not find your application. 
 # Note, \$ means that I want use string "$PATH", if I well be use just
 #  export PATH="$PATH:/home/$SUDO_USER/.local/bin"
 # then in file will be not good, like this (where q is example of corrent user name)
