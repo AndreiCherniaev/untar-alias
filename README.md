@@ -47,7 +47,7 @@ untar() {
     fi
     # printf "unarchive \"$archiveName\" to \"$dir\"" && [ -n "$3" ] && [ "$3" = "-sdel" ] && [ -f "archiveName" ] && printf " then trash \"$archiveName\"\n"
     case "$archiveName" in
-        *.tar.gz) mkdir -p "$dir" && tar -x --use-compress-program=rapidgzip -f "$archiveName" --directory "$dir"
+        *.tar.gz) mkdir -p "$dir" && tar x --use-compress-program=rapidgzip -f "$archiveName" --directory "$dir"
     esac
     [ -n "$3" ] && [ "$3" = "-sdel" ] && [ -f "archiveName" ] && gio trash "$archiveName" && echo "\"$archiveName\" trashed"
 }
