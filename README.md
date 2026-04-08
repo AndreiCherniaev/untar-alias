@@ -47,8 +47,17 @@ untar() {
     fi
     # printf "unarchive \"$archiveName\" to \"$dir\"" && [ -n "$3" ] && [ "$3" = "-sdel" ] && [ -f "archiveName" ] && printf " then trash \"$archiveName\"\n"
     case "$archiveName" in
-        *.tar.gz) mkdir -p "$dir" && tar x --use-compress-program=rapidgzip -f "$archiveName" --directory "$dir"
+        *.tar.gz) local prog="--use-compress-program=rapidgzip";;
+        *.tar.bz2) local prog="--use-compress-program=rapidgzip";;
+        *.tar.lz) local prog="--use-compress-program=tarlz";;
+        *.tar.xz) local prog="--use-compress-program='xz -d -T0'";;
+        *) echo "no parallel use-compress-program found, simple code will be used mkdir -p \""$dir"\" && tar xf \""$archiveName"\" --directory \""$dir"\"";;
     esac
+    if [ -s "$archiveName" ]; then # check that file exists with size>0
+        mkdir -p "$dir" && tar x $prog -f "$archiveName" --directory "$dir" || echo "err, mkdir -p \""$dir"\" && tar x $prog -f \""$archiveName"\" --directory \""$dir"\""
+    else
+        echo "err, archive !exists||empty, mkdir -p \""$dir"\" && tar x $prog -f \""$archiveName"\" --directory \""$dir"\""
+    fi
     [ -n "$3" ] && [ "$3" = "-sdel" ] && [ -f "archiveName" ] && gio trash "$archiveName" && echo "\"$archiveName\" trashed"
 }
 EOF
@@ -57,5 +66,5 @@ How to use? Example
 ```
 untar archive.tar.gz myfolder222 -sdel
 ```
-ToDo:
-2) Switch logic based on tar format (bz2, gz, ...) like in https://gist.github.com/y0z/8b0337a0d8ba595d2b51bf883562f88b
+Known bugs:
+1) untar xz should be fixed
