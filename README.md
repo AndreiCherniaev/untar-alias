@@ -49,12 +49,7 @@ untar() {
     case "$archiveName" in
         *.tar.gz) mkdir -p "$dir" && tar -x --use-compress-program=rapidgzip -f "$archiveName" --directory "$dir"
     esac
-    if [ -n "$3" ]; then
-        local arg3="$3"
-        if [ "$arg3" = "-sdel" ]; then
-            gio trash "$archiveName" && echo "\"$archiveName\" trashed"
-        fi
-    fi
+    [ -n "$3" ] && [ "$3" = "-sdel" ] && [ -f "archiveName" ] && gio trash "$archiveName" && echo "\"$archiveName\" trashed"
 }
 EOF
 ```
