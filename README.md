@@ -38,17 +38,17 @@ cat <<'EOF' >> "$HOME/.bashrc"
 
 untar() {
     local absolute_path="$1" #path to archive
-    local filename=$(basename "$absolute_path")
-    local filename_no_extension="${filename%.*.*}"
+    local archiveName=$(basename "$absolute_path")
+    local filename_no_extension="${archiveName%.*.*}"
     [[ -z "$2" ]] && local dir="${2:-$filename_no_extension}" || local dir="$2"
-    # printf "unarchive \"$filename\" to \"$dir\"" && [[ -n "$3" ]] && [ "$3" = "-sdel" ] && printf " then trash \"$filename\"\n"
-    case "$filename" in
-        *.tar.gz) mkdir -p "$dir" && tar -x --use-compress-program=rapidgzip -f "$filename" --directory "$dir"
+    # printf "unarchive \"$archiveName\" to \"$dir\"" && [[ -n "$3" ]] && [ "$3" = "-sdel" ] && printf " then trash \"$archiveName\"\n"
+    case "$archiveName" in
+        *.tar.gz) mkdir -p "$dir" && tar -x --use-compress-program=rapidgzip -f "$archiveName" --directory "$dir"
     esac
     if [ -n "$3" ]; then
         local arg3="$3"
         if [ "$arg3" = "-sdel" ]; then
-            gio trash "$filename" && echo "\"$filename\" trashed"
+            gio trash "$archiveName" && echo "\"$archiveName\" trashed"
         fi
     fi
 }
