@@ -39,8 +39,12 @@ cat <<'EOF' >> "$HOME/.bashrc"
 untar() {
     local absolute_path="$1" #path to archive
     local archiveName=$(basename "$absolute_path")
-    local filename_no_extension="${archiveName%.*.*}"
-    [[ -z "$2" ]] && local dir="${2:-$filename_no_extension}" || local dir="$2"
+    if [ -n "$2" ]; then # dir to unarchive is set by user
+        local dir="$2"
+    else # dir to unarchive will be set automatically based on archiveName
+        local filename_no_extension="${archiveName%.*.*}"
+        local dir="${2:-$filename_no_extension}"
+    fi
     # printf "unarchive \"$archiveName\" to \"$dir\"" && [[ -n "$3" ]] && [ "$3" = "-sdel" ] && printf " then trash \"$archiveName\"\n"
     case "$archiveName" in
         *.tar.gz) mkdir -p "$dir" && tar -x --use-compress-program=rapidgzip -f "$archiveName" --directory "$dir"
