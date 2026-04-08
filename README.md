@@ -41,7 +41,7 @@ untar() {
     local filename=$(basename "$absolute_path")
     local filename_no_extension="${filename%.*.*}"
     [[ -z "$2" ]] && local dir="${2:-$filename_no_extension}" || local dir="$2"
-    # echo "unarchive \"$filename\" to \"$dir\""
+    # printf "unarchive \"$filename\" to \"$dir\"" && [[ -n "$3" ]] && [ "$3" = "-sdel" ] && printf " then trash \"$filename\"\n"
     case "$filename" in
         *.tar.gz) mkdir -p "$dir" && tar -x --use-compress-program=rapidgzip -f "$filename" --directory "$dir"
     esac
