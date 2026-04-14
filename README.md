@@ -23,6 +23,7 @@ Make 1 MiB file with random info, put it to archive and remove original file. Id
 ```
 head -c 1M /dev/urandom > sample.txt
 tar -czvf "archive.tar.gz" sample.txt
+tar -c -I 'zstd -22 --ultra --long -T0' -f "archive.zst" sample.txt
 rm sample.txt
 ```
 Test rapidgzip
@@ -50,6 +51,7 @@ untar() {
         *.tar.gz) local prog="--use-compress-program=rapidgzip";;
         *.tar.bz2) local prog="--use-compress-program=rapidgzip";;
         *.tar.lz) local prog="--use-compress-program=tarlz";;
+        *.zst) local prog="--use-compress-program='unzstd -T0'";;
         *.tar.xz) local prog="--use-compress-program='xz -d -T0'";;
         *) echo "no parallel use-compress-program found, simple code will be used mkdir -p \""$dir"\" && tar xf \""$archiveName"\" --directory \""$dir"\"";;
     esac
@@ -65,6 +67,9 @@ EOF
 How to use? Example
 ```
 untar archive.tar.gz myfolder222 -sdel
+untar archive_name.tar.xz
+untar archive_name.zst
 ```
 Known bugs:
-1) untar xz should be fixed
+1) untar archive_name.tar.xz should be fixed
+1) untar archive_name.zst should be fixed
